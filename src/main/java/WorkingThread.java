@@ -1,3 +1,4 @@
+import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +37,13 @@ public class WorkingThread extends Thread {
                 target_dir = Tools.create_dir(buffer_name_file, buffer_name_dir);
                 try {
                     FileUtils.moveFileToDirectory(list_files[0], target_dir, true);
+                } catch (FileExistsException e) {
+                    try {
+                        FileUtils.deleteDirectory(target_dir);
+                        continue;
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
